@@ -1,30 +1,18 @@
-name: Sync Version from Private Repo
+name: React to Version Update
 
 on:
   push:
+    branches:
+      - main  # Or your default branch
+    paths:
+      - DigMacro
 
 jobs:
-  sync-version:
+  react:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout public repo
-      uses: actions/checkout@v4
+      - name: Checkout public repo
+        uses: actions/checkout@v4
 
-    - name: Clone private repo
-      env:
-        GH_TOKEN: ${{ secrets.PRIVATE_REPO_TOKEN }}
-      run: |
-        git clone https://x-access-token:${GH_TOKEN}@github.com/httpsnath/DigNathoMacro.git private-repo
-
-    - name: Copy version to DigMacro
-      run: |
-        cp private-repo/version DigMacro
-
-    - name: Commit and push changes
-      run: |
-        git config user.name "github-actions"
-        git config user.email "github-actions@github.com"
-        git add DigMacro
-        git commit -m "Update DigMacro version" || echo "No changes to commit"
-        git push
+      - name: Print DigMacro content
+        run: cat DigMacro
